@@ -34,10 +34,6 @@ RowLayout {
 
   PwObjectTracker {
     id: tracker
-    objects: [Pipewire.defaultAudioSink]
-
-    onObjectsChanged: {
-      sink = Pipewire.defaultAudioSink;
-    }
+    objects: [sink]
   }
 }
