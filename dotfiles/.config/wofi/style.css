@@ -1,0 +1,24 @@
+window {
+    border-radius: 12px;
+}
+
+#input {
+    margin: 5px;
+}
+
+#inner-box {
+    margin: 5px;
+}
+
+#text {
+    margin: 5px;
+}
+
+#entry {
+    border-radius: 8px;
+}
+
+#entry:selected #text {
+    font-weight: bold;
+}
+

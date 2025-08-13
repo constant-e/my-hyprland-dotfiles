@@ -1,7 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import "components"
+import "modules"
+import "root:/components"
 
 // Top Bar
 Scope {
@@ -14,7 +15,7 @@ Scope {
       id: bar
       required property var modelData
       screen: modelData
-      color: Qt.rgba(1, 1, 1, 0.25)
+      color: Style.style.background
 
       anchors {
         top: true
@@ -57,11 +58,11 @@ Scope {
         spacing: 5
 
         SysTray {}
-        Text { text: "|" }
+        MyText { text: "|" }
         Volume {}
-        Text { text: "|" }
+        MyText { text: "|" }
         Battery {}
-        Text { text: "|" }
+        MyText { text: "|" }
         Notifications {}
       }
     }

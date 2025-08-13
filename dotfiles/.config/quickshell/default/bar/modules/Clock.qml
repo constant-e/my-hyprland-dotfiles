@@ -1,8 +1,9 @@
 import QtQuick
 import Quickshell
+import "root:/components"
 
 Item {
-  Text {
+  MyText {
     anchors.centerIn: parent
     text: Qt.formatDateTime(clock.date, "yyyy.MM.dd dddd hh:mm:ss")
   }

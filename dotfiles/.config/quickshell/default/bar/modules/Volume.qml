@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Pipewire
+import "root:/components"
 
 RowLayout {
   id: root
@@ -27,7 +28,7 @@ RowLayout {
     }
   }
 
-  Text {
+  MyText {
     id: volume
     text: sink.audio.muted ? "Muted" : Math.round(sink.audio.volume * 100) + "%"
   }

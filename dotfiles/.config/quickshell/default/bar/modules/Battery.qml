@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.UPower
+import "root:/components"
 
 RowLayout {
   id: root
@@ -10,7 +11,7 @@ RowLayout {
   // Battery Icon
   Rectangle {
     color: "transparent"
-    border.color: "black"
+    border.color: Style.style.foreground
     border.width: 1
     implicitWidth: 20
     implicitHeight: 10
@@ -37,7 +38,7 @@ RowLayout {
       }
       height: 6
       width: 2
-      color: "black"
+      color: Style.style.foreground
       radius: 4
     }
   }
@@ -46,11 +47,11 @@ RowLayout {
     switch (UPower.displayDevice.state) {
       case UPowerDeviceState.Charging: return Qt.rgba(52/255, 199/255, 89/255);
       case UPowerDeviceState.Discharging && UPower.displayDevice.percentage < 0.2: return "red";
-      default: return "black";
+      default: return Style.style.foreground;
     }
   }
 
-  Text {
+  MyText {
     id: battery
 
     text: UPower.displayDevice.percentage * 100 + "%"

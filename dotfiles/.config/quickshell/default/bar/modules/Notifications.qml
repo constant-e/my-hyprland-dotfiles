@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import "root:/components"
 
 Item {
   id: root
@@ -38,7 +39,7 @@ Item {
       id: background
       anchors.fill: parent
 
-      color: "white"
+      color: Style.style.background
       radius: 12      
     }
   }
