@@ -40,7 +40,7 @@ Item {
       anchors.fill: parent
 
       color: Style.style.backgroundSolid
-      radius: 12      
+      radius: 12
     }
   }
 }

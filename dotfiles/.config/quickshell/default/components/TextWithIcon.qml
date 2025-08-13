@@ -4,9 +4,10 @@ Item {
   id: root
   required property var text
   required property var icon
-  implicitHeight: myText.implicitHeight + 4
+  property var clickable: false
+  implicitHeight: myText.contentHeight + 4
   // icon left margin (2) + space (5) + text right margin (2)
-  implicitWidth: image.width + myText.implicitWidth + 9
+  implicitWidth: image.width + myText.contentWidth + 9
 
   signal clicked(var event)
 
@@ -24,18 +25,18 @@ Item {
       verticalCenter: parent.verticalCenter
       margins: 2
     }
-    height: parent.height - 4
+    height: myText.contentHeight
     fillMode: Image.PreserveAspectFit
     source: root.icon
   }
 
   MyText {
+    id: myText
     anchors {
       left: image.right
       verticalCenter: parent.verticalCenter
       leftMargin: 5
     }
-    id: myText
     text: root.text
   }
 
@@ -45,7 +46,9 @@ Item {
     hoverEnabled: true
 
     onEntered: {
-      background.color = "#11ffffff"
+      if (root.clickable) {
+        background.color = "#11ffffff"
+      }
     }
 
     onExited: {
@@ -53,7 +56,9 @@ Item {
     }
 
     onClicked: event => {
-      root.clicked(event)
+      if (root.clickable) {
+        root.clicked(event)
+      }
     }
   }
 }

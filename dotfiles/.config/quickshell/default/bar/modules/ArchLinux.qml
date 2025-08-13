@@ -39,7 +39,6 @@ Item {
     Rectangle {
       id: background
       anchors.fill: parent
-
       color: Style.style.backgroundSolid
       radius: 12      
     }
@@ -67,6 +66,7 @@ Item {
       TextWithIcon {
         text: "Log Out"
         icon: "image://icon/system-log-out-symbolic"
+        clickable: true
         onClicked: {
           Quickshell.execDetached(["hyprctl", "dispatch", "exit"])
         }
@@ -75,6 +75,7 @@ Item {
       TextWithIcon {
         text: "Reboot"
         icon: "image://icon/system-reboot-symbolic"
+        clickable: true
         onClicked: {
           Quickshell.execDetached(["reboot"])
         }
@@ -83,6 +84,7 @@ Item {
       TextWithIcon {
         text: "Shutdown"
         icon: "image://icon/system-shutdown-symbolic"
+        clickable: true
         onClicked: {
           Quickshell.execDetached(["poweroff"])
         }

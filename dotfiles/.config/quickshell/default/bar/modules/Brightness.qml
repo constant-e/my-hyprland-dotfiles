@@ -1,41 +1,50 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Hyprland
-import Quickshell.Services.Pipewire
 import "root:/components"
 
 TextWithIcon {
   id: root
+  text: brightness + "%"
   icon: "image://icon/" + getIcon()
-  text: sink.audio.muted ? "Muted" : Math.round(volume * 100) + "%"
 
-  property var sink: Pipewire.defaultAudioSink
-  property var volume: sink.audio.volume
-  property var muted: sink.audio.muted
+  property var brightness
 
-  function getIcon() {
-    if (volume == 0 || muted) {
-      return "audio-volume-muted"
-    } else if (0 < volume <= 0.3) {
-      return "audio-volume-low"
-    } else if (0.3 < volume <= 0.7) {
-      return "audio-volume-medium"
-    } else {
-      return "audio-volume-high"
+  Process {
+    id: process
+    running: true
+    command: [ "brightnessctl", "get"]
+    stdout: StdioCollector {
+      onStreamFinished: {
+        var output = this.text.replace("\n", "")
+        if (root.brightness != output) {
+          root.brightness = output
+        }
+      }
     }
   }
 
-  PwObjectTracker {
-    id: tracker
-    objects: [sink]
+  Timer {
+    interval: 50
+    running: true
+    repeat: true
+    onTriggered: process.running = true
   }
 
-  onVolumeChanged: {
-    popup.visible = true
-    timer.start()
+  function getIcon() {
+    if (brightness == 0) {
+      return "display-brightness-off-symbolic"
+    } else if (0 < brightness <= 0.3) {
+      return "display-brightness-low-symbolic"
+    } else if (0.3 < brightness <= 0.7) {
+      return "display-brightness-medium-symbolic"
+    } else {
+      return "display-brightness-high-symbolic"
+    }
   }
 
-  onMutedChanged: {
+  onBrightnessChanged: {
     popup.visible = true
     timer.start()
   }
@@ -70,7 +79,7 @@ TextWithIcon {
       id: popupText
       anchors.centerIn: parent
       icon: "image://icon/" + getIcon()
-      text: "<h2>" + (sink.audio.muted ? "Muted" : Math.round(sink.audio.volume * 100) + "%") + "</h2>"
+      text: "<h2>" + brightness + "%</h2>"
     }
   }
 }

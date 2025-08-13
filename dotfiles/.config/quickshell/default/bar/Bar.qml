@@ -1,4 +1,3 @@
-import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import "modules"
@@ -58,6 +57,8 @@ Scope {
         spacing: 5
 
         SysTray {}
+        MyText { text: "|" }
+        Brightness {}
         MyText { text: "|" }
         Volume {}
         MyText { text: "|" }
