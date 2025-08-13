@@ -1,5 +1,5 @@
 import QtQuick
 
 Text {
-    color: Style.style.foreground
+  color: Style.style.foreground
 }

@@ -39,7 +39,7 @@ Item {
       id: background
       anchors.fill: parent
 
-      color: Style.style.background
+      color: Style.style.backgroundSolid
       radius: 12      
     }
   }
