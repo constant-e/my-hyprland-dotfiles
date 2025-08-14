@@ -6,36 +6,112 @@ import "root:/components"
 
 TextWithIcon {
   id: root
-  icon: "image://icon/" + getIcon()
-  text: sink.audio.muted ? "Muted" : Math.round(volume * 100) + "%"
+  icon: "image://icon/" + getSinkIcon()
+  text: sinkMuted ? "Muted" : Math.round(sinkVolume * 100) + "%"
+  clickable: true
+  onClicked: configWindow.visible = !configWindow.visible
 
   property var sink: Pipewire.defaultAudioSink
-  property var volume: sink.audio.volume
-  property var muted: sink.audio.muted
+  property var source: Pipewire.defaultAudioSource
+  property var sinkVolume: sink.audio.volume
+  property var sourceVolume: source.audio.volume
+  property var sinkMuted: sink.audio.muted
+  property var sourceMuted: source.audio.muted
 
-  function getIcon() {
-    if (volume == 0 || muted) {
+  function getSinkIcon() {
+    if (sinkVolume == 0 || sinkMuted) {
       return "audio-volume-muted"
-    } else if (0 < volume <= 0.3) {
+    } else if (0 < sinkVolume <= 0.3) {
       return "audio-volume-low"
-    } else if (0.3 < volume <= 0.7) {
+    } else if (0.3 < sinkVolume <= 0.7) {
       return "audio-volume-medium"
     } else {
       return "audio-volume-high"
     }
   }
 
+  function getSourceIcon() {
+    if (sourceVolume == 0 || sourceMuted) {
+      return "audio-input-microphone-muted"
+    } else if (0 < sourceVolume <= 0.3) {
+      return "audio-input-microphone-low"
+    } else if (0.3 < sourceVolume <= 0.7) {
+      return "audio-input-microphone-medium"
+    } else {
+      return "audio-input-microphone-high"
+    }
+  }
+
   PwObjectTracker {
-    id: tracker
-    objects: [sink]
+    objects: [sink, source]
   }
 
-  onVolumeChanged: {
-    popup.visible = true
-    timer.start()
+  PopupWindow {
+    id: configWindow
+    property var window: root.QsWindow.window
+    anchor.window: window
+    anchor.onAnchoring: {
+      const rect = window.mapFromItem(root, -(configWindow.implicitWidth - root.implicitWidth)/2, window.height);
+      configWindow.anchor.rect = rect;
+    }
+    color: "transparent"
+    implicitWidth: Math.max(sinkSlider.implicitWidth, sourceSlider.implicitWidth) + 12
+
+    Rectangle {
+      anchors.fill: parent
+      color: Style.style.backgroundSolid
+      radius: 12
+    }
+
+    MyText {
+      id: configTitle
+      anchors {
+        top: parent.top
+        left: parent.left
+        margins: 12
+      }
+      text: "<b>Volume</b>"
+    }
+
+    MySlider {
+      id: sinkSlider
+      icon: "image://icon/" + getSinkIcon()
+      from: 0
+      to: 1
+      value: sinkVolume
+      anchors {
+        top: configTitle.bottom
+        left: configTitle.left
+      }
+      onMoved: {
+        sinkVolume = sinkSlider.value
+      }
+    }
+
+    MySlider {
+      id: sourceSlider
+      icon: "image://icon/" + getSourceIcon()
+      from: 0
+      to: 1
+      value: sourceVolume
+      anchors {
+        left: configTitle.left
+        top: sinkSlider.bottom
+      }
+      onMoved: {
+        sourceVolume = sinkSlider.value
+      }
+    }
   }
 
-  onMutedChanged: {
+  onSinkVolumeChanged: {
+    if (!sinkMuted) {
+      popup.visible = true
+      timer.start()
+    }
+  }
+
+  onSinkMutedChanged: {
     popup.visible = true
     timer.start()
   }
@@ -56,11 +132,10 @@ TextWithIcon {
       rect.y: monitor.height/monitor.scale - popup.height - 100
     }
     color: "transparent"
-    height: popupText.implicitHeight + 12
-    width: popupText.implicitWidth + 12
+    implicitHeight: popupText.implicitHeight + 12
+    implicitWidth: popupText.implicitWidth + 12
 
     Rectangle {
-      id: background
       anchors.fill: parent
       color: Style.style.backgroundSolid
       radius: 12
@@ -69,8 +144,8 @@ TextWithIcon {
     TextWithIcon {
       id: popupText
       anchors.centerIn: parent
-      icon: "image://icon/" + getIcon()
-      text: "<h2>" + (sink.audio.muted ? "Muted" : Math.round(sink.audio.volume * 100) + "%") + "</h2>"
+      icon: "image://icon/" + getSinkIcon()
+      text: "<h2>" + (sinkMuted ? "Muted" : Math.round(sinkVolume * 100) + "%") + "</h2>"
     }
   }
 }

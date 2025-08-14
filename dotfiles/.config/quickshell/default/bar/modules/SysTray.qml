@@ -53,9 +53,7 @@ RowLayout {
         property var window: area.QsWindow.window
         anchor.window: window
         anchor.onAnchoring: {
-          const window = area.QsWindow.window;
           const rect = window.mapFromItem(area, 0, area.y);
-
           menuAnchor.anchor.rect = rect;
         }
       }
