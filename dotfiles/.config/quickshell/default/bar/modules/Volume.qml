@@ -84,7 +84,7 @@ TextWithIcon {
         left: configTitle.left
       }
       onMoved: {
-        sinkVolume = sinkSlider.value
+        sink.audio.volume = sinkSlider.value
       }
     }
 
@@ -99,7 +99,7 @@ TextWithIcon {
         top: sinkSlider.bottom
       }
       onMoved: {
-        sourceVolume = sinkSlider.value
+        source.audio.volume = sourceSlider.value
       }
     }
   }
