@@ -2,7 +2,9 @@
 
 import Quickshell
 import "bar"
+import "dock"
 
-Scope {
+ShellRoot {
   Bar {}
+  Dock {}
 }
